@@ -1,0 +1,544 @@
+ScreenManager:
+    WelcomeScreen:
+    LoginScreen:
+    DashboardScreen:
+    YogaPoseScreen:
+    SignUpScreen:
+    CompletionScreen:
+    PoseDetailScreen:
+    SettingsScreen:
+
+<WelcomeScreen>:
+    name: "welcome"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(20)
+        size_hint: None, None
+        width: dp(360)
+        height: dp(600)
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(500)
+            orientation: 'vertical'
+            spacing: dp(10)
+            Image:
+                source: "final_icon.png"
+                size_hint: None, None
+                size: dp(360), dp(360)
+                pos_hint: {"center_x": 0.5}
+            MDLabel:
+                text: "EasyYoga"
+                font_style: "H5"
+                halign: "center"
+                theme_text_color: "Primary"
+            MDLabel:
+                text: "No Chair No Gain!!!"
+                halign: "center"
+                theme_text_color: "Secondary"
+
+        MDIconButton:
+            icon: "arrow-right"
+            user_font_size: "64sp"
+            pos_hint: {"center_x": 0.5}
+            theme_text_color: "Primary"
+            on_release: app.root.current = "login"
+
+<LoginScreen>:
+    name: "login"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1  # White background
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(20)
+        size_hint_x: None
+        width: dp(300)
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        MDTopAppBar:
+            title: "Login"
+            left_action_items: [["arrow-left", lambda x: app.go_back()]]
+            md_bg_color: app.theme_cls.primary_color
+
+        MDTextField:
+            id: username
+            hint_text: "Username"
+            icon_right: "account"
+            size_hint_x: 1
+            font_size: 50
+            pos_hint: {"center_x": 0.5}
+            mode: "rectangle"
+            line_color_focus: app.theme_cls.primary_color
+
+        MDTextField:
+            id: password
+            hint_text: "Password"
+            icon_right: "lock"
+            size_hint_x: 1
+            font_size: 50
+            pos_hint: {"center_x": 0.5}
+            password: True
+            mode: "rectangle"
+            line_color_focus: app.theme_cls.primary_color
+
+        MDLabel:
+            text: "Forgot your password?"
+            halign: "right"
+            theme_text_color: "Primary"
+            on_touch_down: app.forgot_password()
+
+        MDRaisedButton:
+            text: "Enter"
+            size_hint_x: 1
+            pos_hint: {"center_x": 0.5}
+            md_bg_color: app.theme_cls.primary_color
+            text_color: 1, 1, 1, 1
+            on_release: app.login(username.text, password.text)
+
+        MDLabel:
+            text: "or"
+            halign: "center"
+            theme_text_color: "Primary"
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            spacing: dp(10)
+            MDRectangleFlatButton:
+                text: "Facebook"
+                size_hint_x: 0.5
+                pos_hint: {"center_x": 0.5}
+                on_release: app.login_facebook()
+                md_bg_color: app.theme_cls.primary_color
+                text_color: 1, 1, 1, 1
+            MDRectangleFlatButton:
+                text: "Google"
+                size_hint_x: 0.5
+                pos_hint: {"center_x": 0.5}
+                on_release: app.login_google()
+                md_bg_color: app.theme_cls.primary_color
+                text_color: 1, 1, 1, 1
+
+        MDLabel:
+            text: "New here? [ref=sign_up][color=#000000]Sign up[/color][/ref]"
+            markup: True
+            halign: "center"
+            on_ref_press: app.go_to_sign_up()
+
+<DashboardScreen>:
+    name: "dashboard"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(20)
+
+        MDTopAppBar:
+            title: "Dashboard"
+            left_action_items: [["arrow-left", lambda x: app.go_back()]]
+            right_action_items: [["cog", lambda x: app.go_to_settings()]]
+            md_bg_color: app.theme_cls.primary_color
+
+        MDLabel:
+            id: welcome_label
+            text: "Welcome, Senior"
+            font_style: "H4"
+            halign: "center"
+            theme_text_color: "Primary"
+
+        MDLabel:
+            text: "Explore today's chair yoga schedule"
+            halign: "center"
+            theme_text_color: "Secondary"
+
+        GridLayout:
+            cols: 1
+            spacing: dp(10)
+            size_hint_y: None
+            height: dp(350)
+
+            MDCard:
+                orientation: 'horizontal'
+                size_hint: 1, None
+                height: dp(100)
+                padding: dp(10)
+                spacing: dp(10)
+                on_release: app.show_pose_details(0)
+
+                MDLabel:
+                    id: pose_name_1
+                    text: "chair yoga exercise name 1"
+                    halign: "left"
+                    valign: "middle"
+                    theme_text_color: "Primary"
+
+                MDIcon:
+                    id: pose_icon_1
+                    icon: "meditation"
+                    halign: "right"
+                    theme_text_color: "Primary"
+
+            MDCard:
+                orientation: 'horizontal'
+                size_hint: 1, None
+                height: dp(100)
+                padding: dp(10)
+                spacing: dp(10)
+                on_release: app.show_pose_details(1)
+
+                MDLabel:
+                    id: pose_name_2
+                    text: "chair yoga exercise name 2"
+                    halign: "left"
+                    valign: "middle"
+                    theme_text_color: "Primary"
+
+                MDIcon:
+                    id: pose_icon_2
+                    icon: "meditation"
+                    halign: "right"
+                    theme_text_color: "Primary"
+
+            MDCard:
+                orientation: 'horizontal'
+                size_hint: 1, None
+                height: dp(100)
+                padding: dp(10)
+                spacing: dp(10)
+                on_release: app.show_pose_details(2)
+
+                MDLabel:
+                    id: pose_name_3
+                    text: "chair yoga exercise name 3"
+                    halign: "left"
+                    valign: "middle"
+                    theme_text_color: "Primary"
+
+                MDIcon:
+                    id: pose_icon_3
+                    icon: "meditation"
+                    halign: "right"
+                    theme_text_color: "Primary"
+
+        MDRaisedButton:
+            text: "START"
+            size_hint_x: None
+            width: dp(200)
+            pos_hint: {"center_x": 0.5}
+            md_bg_color: app.theme_cls.primary_color
+            text_color: 1, 1, 1, 1
+            on_release: app.play()
+
+<YogaPoseScreen>:
+    name: "yoga_pose"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(20)
+
+        MDTopAppBar:
+            title: "Yoga Pose"
+            left_action_items: [["arrow-left", lambda x: app.go_back()]]
+            md_bg_color: app.theme_cls.primary_color
+
+        MDLabel:
+            id: pose_name
+            text: "Name of the chair yoga exercise"
+            font_style: "H4"
+            halign: "center"
+            theme_text_color: "Primary"
+
+        Button:
+            text: "Watch Video"
+            size_hint_y: None
+            height: dp(50)
+            on_release: app.root.get_screen('yoga_pose').open_youtube_video()
+
+        MDLabel:
+            id: pose_description
+            text: "description of the pose with its benefits"
+            halign: "center"
+            theme_text_color: "Secondary"
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(100)
+            padding: dp(10)
+
+            MDRaisedButton:
+                text: "Next Pose"
+                size_hint_x: 1
+                pos_hint: {"center_x": 0.5}
+                md_bg_color: app.theme_cls.primary_color
+                text_color: 1, 1, 1, 1
+                on_release: app.next_pose()
+
+<SignUpScreen>:
+    name: "sign_up"
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(20)
+
+        MDTopAppBar:
+            title: "Sign Up"
+            left_action_items: [["arrow-left", lambda x: app.go_back()]]
+            md_bg_color: app.theme_cls.primary_color
+
+        MDBoxLayout:
+            orientation: "vertical"
+            padding: dp(20)
+            spacing: dp(20)
+            size_hint_y: None
+            height: self.minimum_height
+            pos_hint: {"center_x": 0.5, "top": 1}
+
+            MDTextField:
+                id: username
+                hint_text: "Enter username"
+                icon_right: "account"
+                size_hint_y: None
+                height: dp(60)
+                font_size: 50
+                mode: "rectangle"
+
+            MDTextField:
+                id: password
+                hint_text: "Enter password"
+                icon_right: "lock"
+                size_hint_y: None
+                height: dp(60)
+                font_size: 50
+                password: True
+                mode: "rectangle"
+
+            MDTextField:
+                id: confirm_password
+                hint_text: "Confirm password"
+                icon_right: "lock"
+                size_hint_y: None
+                height: dp(60)
+                font_size: 50
+                password: True
+                mode: "rectangle"
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(60)
+                MDCheckbox:
+                    id: remember_me
+                    size_hint_x: None
+                    width: dp(48)
+                    active: False
+                MDLabel:
+                    text: "Remember me"
+                    valign: 'middle'
+                    halign: 'left'
+
+            MDRaisedButton:
+                text: "Sign Up"
+                size_hint_y: None
+                height: dp(60)
+                md_bg_color: app.theme_cls.primary_color
+                on_release: app.sign_up(username.text, password.text, confirm_password.text, remember_me.active)
+
+        Widget:
+            size_hint_y: 1
+
+<PoseDetailScreen>:
+    name: "pose_detail"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(20)
+
+        MDTopAppBar:
+            title: "Pose Details"
+            left_action_items: [["arrow-left", lambda x: app.go_back()]]
+            md_bg_color: app.theme_cls.primary_color
+
+        MDLabel:
+            id: detail_pose_name
+            text: ""
+            font_style: "H4"
+            halign: "center"
+            theme_text_color: "Primary"
+
+        MDLabel:
+            id: detail_pose_description
+            text: ""
+            halign: "center"
+            theme_text_color: "Secondary"
+
+        MDLabel:
+            id: detail_pose_benefits
+            text: ""
+            halign: "center"
+            theme_text_color: "Secondary"
+
+        Button:
+            text: "Watch Video"
+            size_hint_y: None
+            height: dp(50)
+            on_release: app.root.get_screen('pose_detail').open_youtube_video()
+
+<SettingsScreen>:
+    name: "settings"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(20)
+
+        MDTopAppBar:
+            title: "Settings"
+            left_action_items: [["arrow-left", lambda x: app.go_back()]]
+            md_bg_color: app.theme_cls.primary_color
+
+        MDLabel:
+            text: "Set Notification Time"
+            halign: "center"
+            font_style: "H5"
+            theme_text_color: "Primary"
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+
+            MDLabel:
+                text: "Hour:"
+                size_hint_x: None
+                width: dp(50)
+                halign: "center"
+                theme_text_color: "Primary"
+            Spinner:
+                id: notification_hour
+                text: "07"
+                values: [str(i).zfill(2) for i in range(24)]
+                size_hint_x: None
+                width: dp(60)
+
+            MDLabel:
+                text: "Minute:"
+                size_hint_x: None
+                width: dp(50)
+                halign: "center"
+                theme_text_color: "Primary"
+            Spinner:
+                id: notification_minute
+                text: "00"
+                values: [str(i).zfill(2) for i in range(60)]
+                size_hint_x: None
+                width: dp(60)
+
+        MDRaisedButton:
+            text: "Save"
+            size_hint_x: 1
+            pos_hint: {"center_x": 0.5}
+            md_bg_color: app.theme_cls.primary_color
+            text_color: 1, 1, 1, 1
+            on_release: app.save_notification_time(notification_hour.text, notification_minute.text)
+
+<VideoScreen>:
+    name: "video_screen"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            title: "Video"
+            left_action_items: [["arrow-left", lambda x: app.go_back()]]
+            md_bg_color: app.theme_cls.primary_color
+
+        VideoPlayer:
+            id: video_player
+            source: ""
+            state: 'play'
+            options: {'eos': 'loop'}
+
+<CompletionScreen>:
+    name: "completion"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(20)
+        size_hint: None, None
+        width: dp(300)
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(200)
+            pos_hint: {"center_x": 0.5}
+            orientation: 'vertical'
+            Image:
+                source: "thumbs_up.png"
+                allow_stretch: True
+                keep_ratio: True
+                size_hint: None, None
+                size: dp(200), dp(200)
+                pos_hint: {"center_x": 0.5}
+
+        MDLabel:
+            text: "Congratulations for completing the recommended exercises"
+            halign: "center"
+            theme_text_color: "Primary"
+
+        MDRaisedButton:
+            text: "Exit"
+            size_hint_x: 1
+            pos_hint: {"center_x": 0.5}
+            md_bg_color: app.theme_cls.primary_color
+            on_release: app.go_back_to_dashboard()
+
+
+
